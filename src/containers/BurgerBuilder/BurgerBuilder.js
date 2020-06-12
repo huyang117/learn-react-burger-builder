@@ -105,6 +105,7 @@ class BurgerBuilder extends Component {
         //     .catch(error => this.setState({ purchasing: false, orderSubmitLoading: false }));
         
         const queryParams = [];
+        queryParams.push('price='+this.state.totalPrice); // work-around as for now
         for (let i in this.state.ingredients) {
             queryParams.push(encodeURIComponent(i) + '='
             + encodeURIComponent(this.state.ingredients[i]));

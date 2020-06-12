@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom';
 
 import CheckoutSummary from '../../components/OrderPlacing/CheckoutSummary/CheckoutSummary';
+import ContactData from '../Checkout/ContactData/ContactData';
 
 class Checkout extends Component {
     state = {
-        ingredients: {}
+        ingredients: {}, 
+        price: 0
     }
 
-    componentDidMount () {
+    componentDidMount() { // changed to componentWillMount in the tutorial
         const query = new URLSearchParams(this.props.location.search);
         const ingredients = {};
         for (let param of query.entries()) {
-            ingredients[param[0]] = (+param[1]);
+            if (param[0]==='price') {
+                this.setState({ price: param[1] });
+            } else {
+                ingredients[param[0]] = (+param[1]);
+            } 
         }
         this.setState({ ingredients: ingredients });
     }
@@ -27,10 +34,20 @@ class Checkout extends Component {
     render() {
         return (
             <div>
-                <CheckoutSummary 
+                <CheckoutSummary
                     ingredients={this.state.ingredients}
                     checkoutCancelled={this.checkoutCancelledHandler}
                     checkoutContinued={this.checkoutContinuedHandler} />
+                <Route 
+                    path={this.props.match.path + '/contact-data'} 
+                    render={(props) => (
+                        <ContactData 
+                            ingredients={this.state.ingredients}
+                            price={this.state.price}
+                            {...props} />)} />
+                            {/* due to the way we render ContactData component,
+                             the history object is not available. That is the 
+                             reason of passing props to ContactData */}
             </div>
         );
     }
