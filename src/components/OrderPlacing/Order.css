@@ -6,6 +6,14 @@
     box-shadow: 0 2px 3px #eee;
 }
 
+.Ingredient {
+    text-transform: capitalize;
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
 @media (min-width: 500px) {
     .Order {
         width: 500px;
