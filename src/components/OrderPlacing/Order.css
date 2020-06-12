@@ -1,0 +1,13 @@
+.Order {
+    width: 80%;
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 3px #eee;
+}
+
+@media (min-width: 500px) {
+    .Order {
+        width: 500px;
+    }
+}

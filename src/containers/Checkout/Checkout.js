@@ -10,7 +10,7 @@ class Checkout extends Component {
         price: 0
     }
 
-    componentDidMount() { // changed to componentWillMount in the tutorial
+    componentDidMount() { // if ingredients is initially NULL, then here should be componentWillMount
         const query = new URLSearchParams(this.props.location.search);
         const ingredients = {};
         for (let param of query.entries()) {
