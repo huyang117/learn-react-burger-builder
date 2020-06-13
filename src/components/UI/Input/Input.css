@@ -1,6 +1,7 @@
 .Input {
     width: 100%;
     box-sizing: border-box;
+    vertical-align: middle;
 }
 
 .Label {
