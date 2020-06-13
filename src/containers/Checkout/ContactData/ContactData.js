@@ -72,19 +72,14 @@ class ContactData extends Component {
         event.preventDefault();
         //console.log(this.props.ingredients, this.props.price);
         this.setState({ orderSubmitLoading: true });
+        const orderData = {};
+        for (let formElementIdentifier in this.state.orderForm) {
+            orderData[formElementIdentifier]=this.state.orderForm[formElementIdentifier].value;
+        }
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
-            customer: {
-                name: 'Alex',
-                address: {
-                    street: '2 Holland Avenue',
-                    zipcode: '271002',
-                    country: 'Singapore'
-                },
-                email: 'burgerbuilder@test.com'
-            },
-            deliveryMethod: 'fastest'
+            ...orderData
         }
         axios.post('/orders.json', order)
             .then(response => {
@@ -94,11 +89,11 @@ class ContactData extends Component {
             .catch(error => this.setState({ orderSubmitLoading: false }));
     }
 
-    inputChangedHandler = (event, inputIdentifier) => {
+    inputChangedHandler = (event, formElementIdentifier) => {
         const updatedOrderForm = {...this.state.orderForm};
-        const updatedElemObj = {...this.state.orderForm[inputIdentifier]};
+        const updatedElemObj = {...this.state.orderForm[formElementIdentifier]};
         updatedElemObj.value = event.target.value;
-        updatedOrderForm[inputIdentifier] = updatedElemObj;
+        updatedOrderForm[formElementIdentifier] = updatedElemObj;
         this.setState({orderForm: updatedOrderForm});
     }
 
@@ -121,11 +116,9 @@ class ContactData extends Component {
         });
 
         let contactDataForm = (
-            <form>
+            <form onSubmit={this.orderPlacedHandler}>
                 {inputElementsOutput}
-                <Button
-                    btnType='Success'
-                    clicked={this.orderPlacedHandler}>PLACE ORDER</Button>
+                <Button btnType='Success'>PLACE ORDER</Button>
             </form>
         );
         if (this.state.orderSubmitLoading === true) {
