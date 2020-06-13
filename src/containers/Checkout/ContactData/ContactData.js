@@ -13,8 +13,8 @@ class ContactData extends Component {
             name: {
                 elementType:'input',
                 elementConfig:{
-                    type:"text",
-                    placeholder:"Your Name"
+                    type:'text',
+                    placeholder:'Your Name'
                 },
                 value:'',
                 label:'Name'
@@ -94,6 +94,14 @@ class ContactData extends Component {
             .catch(error => this.setState({ orderSubmitLoading: false }));
     }
 
+    inputChangedHandler = (event, inputIdentifier) => {
+        const updatedOrderForm = {...this.state.orderForm};
+        const updatedElemObj = {...this.state.orderForm[inputIdentifier]};
+        updatedElemObj.value = event.target.value;
+        updatedOrderForm[inputIdentifier] = updatedElemObj;
+        this.setState({orderForm: updatedOrderForm});
+    }
+
     render() {
         const formElements=[];
         for (let key in this.state.orderForm) {
@@ -108,7 +116,8 @@ class ContactData extends Component {
                         elementType={formElement.elementType}
                         elementConfig={formElement.elementConfig}
                         value={formElement.value}
-                        label={formElement.label} />
+                        label={formElement.label}
+                        changed={(event) => this.inputChangedHandler(event,formElement.key)} />
         });
 
         let contactDataForm = (
