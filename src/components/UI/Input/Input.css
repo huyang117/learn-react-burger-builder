@@ -20,3 +20,17 @@
     font: inherit;
     box-sizing: border-box;
 }
+
+.Invalid {
+    outline: none;
+    border: 1px solid red;
+    background-color: #ffdde1;
+}
+
+.ValidationError {
+    margin-top: 0;
+    padding-top: 0;
+    text-align: left;
+    margin-left: 30%;
+    color: red;
+}

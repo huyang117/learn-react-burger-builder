@@ -4,19 +4,26 @@ import classes from './Input.css';
 
 const Input = (props) => {
     let inputElement = null;
+    let validationMsg = null;
+    const inputClasses=[classes.InputElement];
+    if (props.shouldValidate && props.invalid && props.touched) {
+        inputClasses.push(classes.Invalid);
+        validationMsg=<p className={classes.ValidationError}>
+                            {props.label} entered is not valid</p>;
+    }
 
     switch (props.elementType) {
         case 'input':
             inputElement = <input
                 {...props.elementConfig}
-                className={classes.InputElement}
+                className={inputClasses.join(' ')}
                 value={props.value}
                 onChange={props.changed} />;
             break;
         case 'textarea':
             inputElement = <textarea
                 {...props.elementConfig}
-                className={classes.InputElement}
+                className={inputClasses.join(' ')}
                 value={props.value}
                 onChange={props.changed} />;
             break;
@@ -29,7 +36,7 @@ const Input = (props) => {
                 ));
             inputElement = (
                 <select
-                    className={classes.InputElement}
+                    className={inputClasses.join(' ')}
                     value={props.value}
                     onChange={props.changed}>
                     {optionList}
@@ -38,7 +45,7 @@ const Input = (props) => {
         default:
             inputElement = <input
                 {...props.elementConfig}
-                className={classes.InputElement}
+                className={inputClasses.join(' ')}
                 value={props.value}
                 onChange={props.changed} />;
     }
@@ -46,6 +53,7 @@ const Input = (props) => {
         <div className={classes.Input}>
             <label className={classes.Label}>{props.label}</label>
             {inputElement}
+            {validationMsg}
         </div>
     );
 }
