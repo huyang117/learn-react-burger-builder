@@ -37,4 +37,42 @@ export const purchaseBurgerAsync = (orderData) => {
                 dispatch(purchaseBurgerFailed(error));
             });
     };
+};
+
+export const fetchOrdersStart = () => {
+    return { type: actionTypes.FETCH_ORDERS_START };
+};
+
+export const fetchOrdersSuccess = (orders) => {
+    return {
+        type: actionTypes.FETCH_ORDERS_SUCCESS,
+        orders: orders
+    };
+};
+
+export const fetchOrdersFailed = (error) => {
+    return {
+        type: actionTypes.FETCH_ORDERS_FAILED,
+        error: error
+    };
+};
+
+export const fetchOrdersAsync = () => {
+    return function (dispatch) {
+        dispatch(fetchOrdersStart());
+        axios.get('/orders.json')
+            .then(response => {
+                const ordersFetched = [];
+                for (let key in response.data) {
+                    ordersFetched.push({
+                        ...response.data[key],
+                        id: key
+                    });
+                }
+                dispatch(fetchOrdersSuccess(ordersFetched));
+            })
+            .catch(error => {
+                dispatch(fetchOrdersFailed(error));
+            });
+    }
 }
