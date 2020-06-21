@@ -9,30 +9,59 @@ const initialState = {
     purchased: false
 };
 
+const purchaseInit = (state, action) => {
+    return updateStateUtil(state, { purchased: false });
+};
+
+const purchaseBurgerStart = (state, action) => {
+    return updateStateUtil(state, { orderSubmitLoading: true });
+};
+
+const purchaseBurgerSuccess = (state, action) => {
+    const newOrder = updateStateUtil(action.orderData, { id: action.orderId });
+    return updateStateUtil(state, {
+        orders: state.orders.concat(newOrder),
+        orderSubmitLoading: false,
+        purchased: true
+    });
+};
+
+const fetchIngredientsFailed = (state, action) => {
+    return updateStateUtil(state, { orderSubmitLoading: false });
+};
+
+const fetchOrdersStart = (state, action) => {
+    return updateStateUtil(state, { fetchOrderLoading: true });
+};
+
+const fetchOrdersSuccess = (state, action) => {
+    return updateStateUtil(state, {
+        orders: action.orders,
+        fetchOrderLoading: false
+    });
+};
+
+const fetchOrdersFailed = (state, action) => {
+    return updateStateUtil(state, { fetchOrderLoading: false });
+}
+
+
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.PURCHASE_INIT:
-            return updateStateUtil(state, { purchased: false });
+            return purchaseInit(state, action);
         case actionTypes.PURCHASE_BURGER_START:
-            return updateStateUtil(state, { orderSubmitLoading: true });
+            return purchaseBurgerStart(state, action);
         case actionTypes.PURCHASE_BURGER_SUCCESS:
-            const newOrder = updateStateUtil(action.orderData, { id: action.orderId });
-            return updateStateUtil(state, {
-                orders: state.orders.concat(newOrder),
-                orderSubmitLoading: false,
-                purchased: true
-            });
+            return purchaseBurgerSuccess(state, action);
         case actionTypes.FETCH_INGREDIENTS_FAILED:
-            return updateStateUtil(state, { orderSubmitLoading: false });
+            return fetchIngredientsFailed(state, action);
         case actionTypes.FETCH_ORDERS_START:
-            return updateStateUtil(state, { fetchOrderLoading: true });
+            return fetchOrdersStart(state, action)
         case actionTypes.FETCH_ORDERS_SUCCESS:
-            return updateStateUtil(state, {
-                orders: action.orders,
-                fetchOrderLoading: false
-            });
+            return fetchOrdersSuccess(state, action);
         case actionTypes.FETCH_ORDERS_FAILED:
-            return updateStateUtil(state, { fetchOrderLoading: false }); 
+            return fetchOrdersFailed(state, action);
         default:
             return state;
     }
