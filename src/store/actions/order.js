@@ -10,7 +10,11 @@ export const purchaseBurgerSuccess = (id, orderData) => {
     };
 };
 
-export const purchaseBurgerStart = () => {
+export const purchaseInit = () => { // mark the start of a new purchase, because when purchase is done --> purchased set to true and cause redirect to home
+    return { type: actionTypes.PURCHASE_INIT };
+};
+
+export const purchaseBurgerStart = () => { // click the PLACE ORDER button
     return { type: actionTypes.PURCHASE_BURGER_START };
 };
 

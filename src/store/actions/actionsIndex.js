@@ -5,5 +5,6 @@ export {
 } from './burgerBuilder';
 
 export {
-    purchaseBurgerAsync
+    purchaseBurgerAsync,
+    purchaseInit
 } from './order';
