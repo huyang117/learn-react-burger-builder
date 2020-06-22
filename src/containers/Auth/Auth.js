@@ -40,7 +40,8 @@ class Auth extends Component {
                 valid: false,
                 touched: false
             }
-        }
+        },
+        signUpMode: true
     };
 
     checkValidity(value, validationRules) {
@@ -68,6 +69,12 @@ class Auth extends Component {
         return isValid;
     }
 
+    switchSignInSignUp = () => {
+        this.setState((prevState) => {
+            return { signUpMode: !prevState.signUpMode };
+        });
+    };
+
     inputChangedHandler = (event, formElementIdentifier) => {
         const updatedControls = {
             ...this.state.controls,
@@ -83,7 +90,7 @@ class Auth extends Component {
 
     onSubmitHandler = (event) => {
         event.preventDefault();
-        this.props.onAuthAsyn(this.state.controls.email.value, this.state.controls.password.value);
+        this.props.onAuthAsyn(this.state.controls.email.value, this.state.controls.password.value, this.state.signUpMode);
     }
 
     render() {
@@ -109,10 +116,16 @@ class Auth extends Component {
         ));
         return (
             <div className={classes.Auth}>
+                <h1>{this.state.signUpMode ? 'SIGN-UP NOW': 'SIGN-IN NOW'}</h1>
                 <form onSubmit={this.onSubmitHandler}>
                     {form}
                     <Button btnType='Success'>SUBMIT</Button>
                 </form>
+                <Button 
+                    btnType='Danger' 
+                    clicked={this.switchSignInSignUp}>
+                    Switch to {this.state.signUpMode ? 'SIGN-IN': 'SIGN-UP'}
+                </Button>
             </div>
         );
     };
@@ -120,7 +133,7 @@ class Auth extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuthAsyn: (email, password) => {dispatch(authActions.authAsync(email, password))}
+        onAuthAsyn: (email, password, signUpMode) => { dispatch(authActions.authAsync(email, password, signUpMode)) }
     };
 };
 
