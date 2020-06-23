@@ -5,7 +5,19 @@
 }
 
 @media (min-width: 600px) {
-    .Auth {
+    .Auth,
+    .ErrorMessage {
         width: 500px;
     }
+}
+
+.ErrorMessage {
+    width: 80%;
+    box-sizing: border-box;
+    background-color: #ffdde1;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px auto;
+    text-align: left;
+    border: 1px solid red;
 }

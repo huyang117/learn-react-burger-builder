@@ -122,7 +122,7 @@ class Auth extends Component {
 
         let errorMessage = null;
         if (this.props.error) {
-            errorMessage = <p>{this.props.error.message}</p>;
+            errorMessage = <p className={classes.ErrorMessage}>{this.props.error}</p>;
         }
 
         return (
