@@ -15,7 +15,7 @@ class HistoryOrders extends Component {
     }
 
     componentDidMount() {
-        this.props.onFetchOrders();
+        this.props.onFetchOrders(this.props.token);
     }
 
     render() {
@@ -39,14 +39,15 @@ class HistoryOrders extends Component {
 const mapStateToProps = state => {
     return {
         orders: state.order.orders,
-        loading: state.order.fetchOrderLoading
+        loading: state.order.fetchOrderLoading,
+        token: state.auth.token
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchOrders: () => dispatch(orderActions.fetchOrdersAsync())
-    }
-}
+        onFetchOrders: (token) => dispatch(orderActions.fetchOrdersAsync(token))
+    };
+};
 
 export default connect(mapStateToProps,mapDispatchToProps)(withErrorHandler(HistoryOrders, axios));
