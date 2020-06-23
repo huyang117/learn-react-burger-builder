@@ -11,5 +11,6 @@ export {
 } from './order';
 
 export {
-    authAsync
+    authAsync,
+    authLogout
 } from './auth';
