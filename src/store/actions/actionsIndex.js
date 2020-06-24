@@ -12,5 +12,6 @@ export {
 
 export {
     authAsync,
-    authLogout
+    authLogout,
+    setAuthRedirectPath
 } from './auth';

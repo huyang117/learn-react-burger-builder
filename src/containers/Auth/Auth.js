@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
@@ -44,6 +45,12 @@ class Auth extends Component {
         },
         signUpMode: true
     };
+
+    componentDidMount() {
+        if ( !this.props.buildingBurger && this.props.authRedirectPath==='/') {
+            this.props.onSetAuthRedirectPath('/');
+        }
+    }
 
     checkValidity(value, validationRules) {
         let isValid = true;
@@ -125,8 +132,14 @@ class Auth extends Component {
             errorMessage = <p className={classes.ErrorMessage}>{this.props.error}</p>;
         }
 
+        let redirectUponLogin = null;
+        if (this.props.isAuthenticated) {
+            redirectUponLogin = <Redirect to={this.props.authRedirectPath} />
+        }
+
         return (
             <div className={classes.Auth}>
+                {redirectUponLogin}
                 <h1>{this.state.signUpMode ? 'SIGN-UP NOW' : 'SIGN-IN NOW'}</h1>
                 {errorMessage}
                 <form onSubmit={this.onSubmitHandler}>
@@ -146,13 +159,17 @@ class Auth extends Component {
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        error: state.auth.error
+        error: state.auth.error,
+        isAuthenticated: state.auth.token !== null,
+        buildingBurger: state.burgerBuilder.building,
+        authRedirectPath: state.auth.authRedirectPath
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuthAsyn: (email, password, signUpMode) => { dispatch(authActions.authAsync(email, password, signUpMode)) }
+        onAuthAsyn: (email, password, signUpMode) => { dispatch(authActions.authAsync(email, password, signUpMode)) },
+        onSetAuthRedirectPath: (path) => dispatch(authActions.setAuthRedirectPath(path))
     };
 };
 

@@ -30,9 +30,9 @@ export const authAsync = (email, password, signUpMode) => {
             password: password,
             returnSecureToken: true
         }
-        let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[api key]';
+        let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA3iyefgBrItcLpiTxVO0Ve5-6LqPLNx8w';
         if (! signUpMode) {
-            url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=[api key]';
+            url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA3iyefgBrItcLpiTxVO0Ve5-6LqPLNx8w';
         }
         axios.post(url,authData)
             .then(response => {
@@ -58,5 +58,12 @@ export const checkAuthTimeup = (expiresIn) => {
 export const authLogout = () => {
     return {
         type: actionTypes.AUTH_LOGOUT
+    };
+};
+
+export const setAuthRedirectPath = (path) => {
+    return {
+        type: actionTypes.SET_AUTH_REDIRECT_PATH,
+        path: path
     };
 };
