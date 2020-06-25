@@ -40,7 +40,7 @@ const authFailed = (state, action) => {
 };
 
 const authLogout = (state, action) => {
-    return updateStateUtil(state, { token: null, userId: null, authRedirectPath: '/' });
+    return updateStateUtil(state, { token: null, userId: null });
 };
 
 const setAuthRedirectPath = (state, action) => {
