@@ -1,6 +1,6 @@
 // reducer for order placing
 import * as actionTypes from '../actions/actionTypes';
-import { updateStateUtil } from '../utility';
+import { updateStateUtil } from '../../shared/utility';
 
 const initialState = {
     orders: [],

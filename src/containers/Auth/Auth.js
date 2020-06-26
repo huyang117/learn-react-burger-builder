@@ -5,8 +5,9 @@ import { Redirect } from 'react-router-dom';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
-
 import * as authActions from '../../store/actions/actionsIndex';
+import { updateStateUtil } from '../../shared/utility';
+
 import classes from './Auth.css';
 
 class Auth extends Component {
@@ -84,15 +85,14 @@ class Auth extends Component {
     };
 
     inputChangedHandler = (event, formElementIdentifier) => {
-        const updatedControls = {
-            ...this.state.controls,
-            [formElementIdentifier]: {
-                ...this.state.controls[formElementIdentifier],
-                value: event.target.value,
-                touched: true,
-                valid: this.checkValidity(event.target.value, this.state.controls[formElementIdentifier].validation)
-            }
-        };
+        const updatedElement = updateStateUtil(this.state.controls[formElementIdentifier], {
+            value: event.target.value,
+            touched: true,
+            valid: this.checkValidity(event.target.value, this.state.controls[formElementIdentifier].validation)
+        });
+        const updatedControls = updateStateUtil(this.state.controls, {
+            [formElementIdentifier]: updatedElement
+        });
         this.setState({ controls: updatedControls });
     }
 

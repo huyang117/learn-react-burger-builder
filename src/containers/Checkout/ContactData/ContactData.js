@@ -7,6 +7,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as orderActions from '../../../store/actions/actionsIndex';
+import { updateStateUtil } from '../../../shared/utility';
 
 import axios from '../../../axios-orders';
 
@@ -142,13 +143,15 @@ class ContactData extends Component {
     }
 
     inputChangedHandler = (event, formElementIdentifier) => {
-        const updatedOrderForm = { ...this.state.orderForm };
-        const updatedElemObj = { ...this.state.orderForm[formElementIdentifier] };
-        updatedElemObj.value = event.target.value;
-        updatedElemObj.valid =
-            this.checkValidity(updatedElemObj.value, updatedElemObj.validation);
-        updatedElemObj.touched = true;
-        updatedOrderForm[formElementIdentifier] = updatedElemObj;
+        const updatedElemObj = updateStateUtil(this.state.orderForm[formElementIdentifier], {
+            value: event.target.value,
+            valid: this.checkValidity(event.target.value, 
+                                      this.state.orderForm[formElementIdentifier].validation),
+            touched: true
+        });
+        const updatedOrderForm = updateStateUtil(this.state.orderForm, {
+            [formElementIdentifier]: updatedElemObj
+        });
         console.log(updatedElemObj);
         //this.setState({ orderForm: updatedOrderForm });
 
