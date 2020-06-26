@@ -127,8 +127,6 @@ class ContactData extends Component {
         const updatedOrderForm = updateStateUtil(this.state.orderForm, {
             [formElementIdentifier]: updatedElemObj
         });
-        console.log(updatedElemObj);
-        //this.setState({ orderForm: updatedOrderForm });
 
         let isOverallValid = true;
         for (let key in updatedOrderForm) {
