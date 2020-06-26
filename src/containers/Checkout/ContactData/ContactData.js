@@ -7,7 +7,7 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as orderActions from '../../../store/actions/actionsIndex';
-import { updateStateUtil } from '../../../shared/utility';
+import { updateStateUtil, checkValidity } from '../../../shared/utility';
 
 import axios from '../../../axios-orders';
 
@@ -102,31 +102,6 @@ class ContactData extends Component {
         elementsAllValid: false,
     }
 
-    checkValidity(value, validationRules) {
-        let isValid = true;
-        if (!validationRules) { // if no validation rules, return true
-            return true;
-        }
-        if (validationRules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-        if (validationRules.minLength) {
-            isValid = value.trim().length >= validationRules.minLength && isValid;
-        }
-        if (validationRules.maxLength) {
-            isValid = value.trim().length <= validationRules.maxLength && isValid;
-        }
-        if (validationRules.isEmail) {
-            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-            isValid = pattern.test(value) && isValid;
-        }
-        if (validationRules.isNumeric) {
-            const pattern = /^\d+$/;
-            isValid = pattern.test(value) && isValid;
-        }
-        return isValid;
-    }
-
     orderPlacedHandler = (event) => {
         event.preventDefault();
         const orderData = {};
@@ -145,7 +120,7 @@ class ContactData extends Component {
     inputChangedHandler = (event, formElementIdentifier) => {
         const updatedElemObj = updateStateUtil(this.state.orderForm[formElementIdentifier], {
             value: event.target.value,
-            valid: this.checkValidity(event.target.value, 
+            valid: checkValidity(event.target.value, 
                                       this.state.orderForm[formElementIdentifier].validation),
             touched: true
         });

@@ -6,7 +6,7 @@ import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import * as authActions from '../../store/actions/actionsIndex';
-import { updateStateUtil } from '../../shared/utility';
+import { updateStateUtil, checkValidity } from '../../shared/utility';
 
 import classes from './Auth.css';
 
@@ -53,31 +53,6 @@ class Auth extends Component {
         }
     }
 
-    checkValidity(value, validationRules) {
-        let isValid = true;
-        if (!validationRules) {
-            return true;
-        }
-        if (validationRules.required) {
-            isValid = value.trim() !== '' && isValid;
-        }
-        if (validationRules.minLength) {
-            isValid = value.trim().length >= validationRules.minLength && isValid;
-        }
-        if (validationRules.maxLength) {
-            isValid = value.trim().length <= validationRules.maxLength && isValid;
-        }
-        if (validationRules.isEmail) {
-            const emailPattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-            isValid = emailPattern.test(value) && isValid;
-        }
-        if (validationRules.isNumeric) {
-            const numericPattern = /^\d+$/;
-            isValid = numericPattern.test(value) && isValid;
-        }
-        return isValid;
-    }
-
     switchSignInSignUp = () => {
         this.setState((prevState) => {
             return { signUpMode: !prevState.signUpMode };
@@ -88,7 +63,7 @@ class Auth extends Component {
         const updatedElement = updateStateUtil(this.state.controls[formElementIdentifier], {
             value: event.target.value,
             touched: true,
-            valid: this.checkValidity(event.target.value, this.state.controls[formElementIdentifier].validation)
+            valid: checkValidity(event.target.value, this.state.controls[formElementIdentifier].validation)
         });
         const updatedControls = updateStateUtil(this.state.controls, {
             [formElementIdentifier]: updatedElement
