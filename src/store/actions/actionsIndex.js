@@ -8,8 +8,14 @@ export {
 
 export {
     purchaseBurgerAsync,
+    purchaseBurgerStart,
+    purchaseBurgerSuccess,
+    purchaseBurgerFailed,
     purchaseInit,
-    fetchOrdersAsync
+    fetchOrdersAsync,
+    fetchOrdersStart,
+    fetchOrdersSuccess,
+    fetchOrdersFailed
 } from './order';
 
 export {
