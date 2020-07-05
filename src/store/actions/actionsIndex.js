@@ -11,6 +11,10 @@ export {
 } from './order';
 
 export {
+    authStart,
+    authSuccess,
+    authFailed,
+    checkAuthTimeup,
     authAsync,
     authLogout,
     authLogoutExecute,
