@@ -20,15 +20,9 @@ export const setIngredients = (ingredients) => {
 };
 
 //asynchronous
-export const initIngredients = (ingredients) => {
-    return function(dispatch) {
-        axios.get('https://react-my-burger-8941b.firebaseio.com/ingredients.json')
-            .then(response => {
-                dispatch(setIngredients(response.data));
-            })
-            .catch(error => {
-                dispatch(fetchIngredientsFailed());
-            });
+export const initIngredients = () => {
+    return {
+        type: actionTypes.INIT_INGREDIENTS
     };
 };
 
