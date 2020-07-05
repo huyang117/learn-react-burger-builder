@@ -13,6 +13,7 @@ export {
 export {
     authAsync,
     authLogout,
+    authLogoutExecute,
     setAuthRedirectPath,
     checkAuthStateForAutoAuth
 } from './auth';

@@ -50,17 +50,22 @@ export const authAsync = (email, password, signUpMode) => {
 };
 
 export const checkAuthTimeup = (expiresIn) => {
-    return function(dispatch) {
-        setTimeout(()=> {
-            dispatch(authLogout());
-        }, expiresIn * 1000);
+    return {
+        type: actionTypes.CHECK_AUTH_TIMEUP,
+        expiresInSeconds: expiresIn
     };
 };
 
 export const authLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('expirationTime');
-    localStorage.removeItem('userId');
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('expirationTime');
+    // localStorage.removeItem('userId');
+    return {
+        type: actionTypes.AUTH_INITIATE_LOGOUT
+    };
+};
+
+export const authLogoutExecute = () => {
     return {
         type: actionTypes.AUTH_LOGOUT
     };
