@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import classes from './ContactData.css';
 import { connect } from 'react-redux';
 
@@ -11,9 +11,9 @@ import { updateStateUtil, checkValidity } from '../../../shared/utility';
 
 import axios from '../../../axios-orders';
 
-class ContactData extends Component {
-    state = {
-        orderForm: {
+const ContactData = props => {
+    const [orderForm, setOrderForm] = useState(
+        {
             name: {
                 elementType: 'input',
                 elementConfig: {
@@ -98,33 +98,33 @@ class ContactData extends Component {
                 validation: {},
                 valid: true
             }
-        },
-        elementsAllValid: false,
-    }
+        });
 
-    orderPlacedHandler = (event) => {
+    const [elementsAllValid, setElementsAllValid] = useState(false);
+
+    const orderPlacedHandler = (event) => {
         event.preventDefault();
         const orderData = {};
-        for (let formElementIdentifier in this.state.orderForm) {
-            orderData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+        for (let formElementIdentifier in orderForm) {
+            orderData[formElementIdentifier] = orderForm[formElementIdentifier].value;
         }
         const order = {
-            ingredients: this.props.ings,
-            price: Number.parseFloat(this.props.price).toFixed(2),
+            ingredients: props.ings,
+            price: Number.parseFloat(props.price).toFixed(2),
             ...orderData,
-            userId: this.props.userId
+            userId: props.userId
         }
-        this.props.onOrderBurger(order, this.props.token);
+        props.onOrderBurger(order, props.token);
     }
 
-    inputChangedHandler = (event, formElementIdentifier) => {
-        const updatedElemObj = updateStateUtil(this.state.orderForm[formElementIdentifier], {
+    const inputChangedHandler = (event, formElementIdentifier) => {
+        const updatedElemObj = updateStateUtil(orderForm[formElementIdentifier], {
             value: event.target.value,
-            valid: checkValidity(event.target.value, 
-                                      this.state.orderForm[formElementIdentifier].validation),
+            valid: checkValidity(event.target.value,
+                orderForm[formElementIdentifier].validation),
             touched: true
         });
-        const updatedOrderForm = updateStateUtil(this.state.orderForm, {
+        const updatedOrderForm = updateStateUtil(orderForm, {
             [formElementIdentifier]: updatedElemObj
         });
 
@@ -133,52 +133,48 @@ class ContactData extends Component {
             isOverallValid = updatedOrderForm[key].valid && isOverallValid;
         }
 
-        this.setState({
-            orderForm: updatedOrderForm,
-            elementsAllValid: isOverallValid
-        });
+        setOrderForm(updatedOrderForm);
+        setElementsAllValid(isOverallValid);
     }
 
-    render() {
-        const formElements = [];
-        for (let key in this.state.orderForm) {
-            formElements.push({
-                key: key,
-                ...this.state.orderForm[key]
-            });
-        }
-        const inputElementsOutput = formElements.map(formElement => {
-            return <Input
-                key={formElement.key}
-                elementType={formElement.elementType}
-                elementConfig={formElement.elementConfig}
-                value={formElement.value}
-                label={formElement.label}
-                changed={(event) => this.inputChangedHandler(event, formElement.key)}
-                shouldValidate={formElement.validation}
-                invalid={!formElement.valid}
-                touched={formElement.touched} />
+    const formElements = [];
+    for (let key in orderForm) {
+        formElements.push({
+            key: key,
+            ...orderForm[key]
         });
-
-        let contactDataForm = (
-            <form onSubmit={this.orderPlacedHandler}>
-                {inputElementsOutput}
-                <Button
-                    btnType='Success'
-                    disabled={!this.state.elementsAllValid}>
-                    PLACE ORDER</Button>
-            </form>
-        );
-        if (this.props.orderSubmitLoading === true) {
-            contactDataForm = <Spinner />;
-        }
-        return (
-            <div className={classes.ContactData}>
-                <h4>Please Enter Your Contact Information</h4>
-                {contactDataForm}
-            </div>
-        );
     }
+    const inputElementsOutput = formElements.map(formElement => {
+        return <Input
+            key={formElement.key}
+            elementType={formElement.elementType}
+            elementConfig={formElement.elementConfig}
+            value={formElement.value}
+            label={formElement.label}
+            changed={(event) => inputChangedHandler(event, formElement.key)}
+            shouldValidate={formElement.validation}
+            invalid={!formElement.valid}
+            touched={formElement.touched} />
+    });
+
+    let contactDataForm = (
+        <form onSubmit={orderPlacedHandler}>
+            {inputElementsOutput}
+            <Button
+                btnType='Success'
+                disabled={!elementsAllValid}>
+                PLACE ORDER</Button>
+        </form>
+    );
+    if (props.orderSubmitLoading === true) {
+        contactDataForm = <Spinner />;
+    }
+    return (
+        <div className={classes.ContactData}>
+            <h4>Please Enter Your Contact Information</h4>
+            {contactDataForm}
+        </div>
+    );
 }
 
 const mapStateToProps = state => {
