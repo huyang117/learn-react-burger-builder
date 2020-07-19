@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import axios from '../../axios-orders';
@@ -8,32 +8,26 @@ import * as orderActions from '../../store/actions/actionsIndex';
 
 import Order from '../../components/OrderPlacing/Order';
 
-class HistoryOrders extends Component {
-    state = {
-        orders: [],
-        loading: true
-    }
+const HistoryOrders = props => {
 
-    componentDidMount() {
-        this.props.onFetchOrders(this.props.token, this.props.userId);
-    }
+    useEffect(() => {
+        props.onFetchOrders(props.token, props.userId);
+    },[]);
 
-    render() {
-        let orders = <Spinner />;
-        if (!this.props.loading && this.props.orders.length===0) {
-            orders = <p>Order history is empty</p>;
-        }
-        else if (!this.props.loading && this.props.orders.length>0) {
-            orders = this.props.orders.map(order => (
-                <Order {...order} key={order.id} />
-            ));
-        }
-        return (
-            <div>
-                {orders}
-            </div>
-        );
+    let orders = <Spinner />;
+    if (!props.loading && props.orders.length === 0) {
+        orders = <p>Order history is empty</p>;
     }
+    else if (!props.loading && props.orders.length > 0) {
+        orders = props.orders.map(order => (
+            <Order {...order} key={order.id} />
+        ));
+    }
+    return (
+        <div>
+            {orders}
+        </div>
+    );
 }
 
 const mapStateToProps = state => {
@@ -51,4 +45,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(withErrorHandler(HistoryOrders, axios));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(HistoryOrders, axios));
