@@ -5,10 +5,9 @@ import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/actionsIndex';
 
 const Logout = props => {
-    useEffect(() => {
-        props.onLogout();
-    }, []);
-    
+    const { onLogout } = props;
+    useEffect(() => { onLogout(); }, [onLogout]);
+
     return (<Redirect to='/' />);
 };
 

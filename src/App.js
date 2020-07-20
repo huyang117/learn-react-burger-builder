@@ -13,9 +13,9 @@ const AsyncHistoryOrders = React.lazy(() => import('./containers/HistoryOrders/H
 const AsyncCheckout = React.lazy(() => import('./containers/Checkout/Checkout'));
 
 const App = props => {
-  useEffect(() => {
-    props.onCheckAutoAuth();
-  }, []);
+
+  const { onCheckAutoAuth } = props;
+  useEffect(() => { onCheckAutoAuth(); }, [onCheckAutoAuth]);
 
   let routes = (
     <Switch>
